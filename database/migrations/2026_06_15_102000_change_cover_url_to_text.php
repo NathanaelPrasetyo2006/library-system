@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        // Change cover_url to text to allow long URLs
+        Schema::table('books', function (Blueprint $table) {
+            // drop column if exists then add text column (safe because seed hasn't populated yet)
+            if (Schema::hasColumn('books', 'cover_url')) {
+                $table->dropColumn('cover_url');
+            }
+        });
+
+        Schema::table('books', function (Blueprint $table) {
+            $table->text('cover_url')->nullable();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('books', function (Blueprint $table) {
+            if (Schema::hasColumn('books', 'cover_url')) {
+                $table->dropColumn('cover_url');
+            }
+        });
+
+        Schema::table('books', function (Blueprint $table) {
+            $table->string('cover_url', 255)->nullable();
+        });
+    }
+};
