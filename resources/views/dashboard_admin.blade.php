@@ -169,10 +169,10 @@
     </a>
 </nav>
 <div class="mt-auto space-y-xs pt-md border-t border-outline-variant">
-<button class="w-full flex items-center justify-center gap-xs bg-secondary text-on-secondary px-md py-sm rounded-lg font-label-lg active:scale-95 transition-transform">
+<!-- <button class="w-full flex items-center justify-center gap-xs bg-secondary text-on-secondary px-md py-sm rounded-lg font-label-lg active:scale-95 transition-transform">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
 <span>Add New Entry</span>
-</button>
+</button> -->
 <a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="{{ route('profile.edit') }}">
     <span class="material-symbols-outlined" data-icon="settings">settings</span>
     <span class="font-body-md text-body-md">Settings</span>

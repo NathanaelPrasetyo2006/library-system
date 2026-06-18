@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
         // Seed books and transactions for dashboard demo
         $this->call(BooksSeeder::class);
         $this->call(TransactionsSeeder::class);
+        $this->call(CategoriesSeeder::class);
+        $this->call(MembersSeeder::class);
 
         // User::factory(10)->create();
         // User::factory()->create([

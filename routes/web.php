@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,7 +30,10 @@ Route::middleware(['auth', 'verified', 'checkrole:admin'])->group(function () {
 
 // Petugas + Admin routes (manajemen data)
 Route::middleware(['auth', 'verified', 'checkrole:admin,petugas'])->group(function () {
-    Route::view('/buku', 'manajemen_buku')->name('buku');
+    Route::get('/buku', [BookController::class, 'index'])->name('buku');
+    Route::post('/books', [BookController::class, 'store'])->name('books.store');
+    Route::patch('/books/{book}', [BookController::class, 'update'])->name('books.update');
+    Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
     Route::view('/anggota', 'manajemen_anggota')->name('anggota');
     Route::view('/peminjaman', 'peminjaman_pengembalian')->name('peminjaman');
 });

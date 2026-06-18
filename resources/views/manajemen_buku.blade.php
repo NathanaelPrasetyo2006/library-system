@@ -155,7 +155,7 @@
 <div class="mt-auto space-y-xs pt-md border-t border-outline-variant">
 <button class="w-full flex items-center justify-center gap-xs bg-secondary text-on-secondary px-md py-sm rounded-lg font-label-lg active:scale-95 transition-transform" onclick="openModal()">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
-            Add New Entry
+            Add New Book
         </button>
 <a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="{{ route('profile.edit') }}">
     <span class="material-symbols-outlined" data-icon="settings">settings</span>
@@ -245,105 +245,45 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-outline-variant">
+@foreach($books as $book)
 <tr class="hover:bg-surface-container-lowest/50 transition-colors">
 <td class="px-md py-md">
 <div class="flex items-center gap-sm">
 <div class="w-10 h-14 bg-surface-container rounded-sm flex-shrink-0 overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A professional book cover design featuring a minimalist abstract geometric pattern with a deep indigo and silver color scheme. The lighting is soft and studio-quality, highlighting the texture of the paper. This represents a modern, systematic corporate library management aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDSvsXVxj2-1SIpduodNm63iqIGtLFgZCIMU5Gvafv_oJ2sbnmC3UWYm5mTPIDG9TFEOyc6qnfaM246dUtK357eGAbJeUKzzsggkQUVAJm7v6eh2vsH8bQEEN-Veo8ZXIHmHW92pJh_HuKRlwVHUpEpBt0U3bRrRdhQncHov0dpkh7URj3tr3zt6kS0EyLR6YfwtmDjtwur_xsEOSMeRcD7RBCNhIR8P4UjEXew2v1cqZ0JtbfR_K25TeOunvIYrmiXppI3cwmx4H_"/>
+<img class="w-full h-full object-cover" src="{{ $book->cover_url ?? 'https://via.placeholder.com/80x120?text=No+Cover' }}" alt="{{ $book->title }} cover" />
 </div>
 <div>
-<p class="font-label-lg text-label-lg text-primary">Systematic Architecture</p>
-<p class="text-label-md text-on-surface-variant">K. Richardson</p>
+<p class="font-label-lg text-label-lg text-primary">{{ $book->title }}</p>
+<p class="text-label-md text-on-surface-variant">{{ $book->author }}</p>
 </div>
 </div>
 </td>
-<td class="px-md py-md font-body-md text-on-surface-variant">978-3-16-148410-0</td>
+<td class="px-md py-md font-body-md text-on-surface-variant">{{ $book->isbn }}</td>
 <td class="px-md py-md">
-<span class="px-sm py-[2px] bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-[11px] font-bold uppercase tracking-wider">Technical</span>
+<span class="px-sm py-[2px] bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-[11px] font-bold uppercase tracking-wider">{{ $book->category ?? 'Uncategorized' }}</span>
 </td>
 <td class="px-md py-md text-center">
 <div class="inline-flex items-center gap-xs px-sm py-[2px] bg-tertiary-fixed text-on-tertiary-fixed rounded-full text-[11px] font-bold">
 <span class="w-1.5 h-1.5 bg-on-tertiary-container rounded-full"></span>
-                                        12 Left
-                                    </div>
+{{ $book->stock ?? 0 }}
+</div>
 </td>
 <td class="px-md py-md text-right">
 <div class="flex justify-end gap-xs">
-<button class="p-xs text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/30 rounded-lg transition-all">
+<button type="button" class="p-xs text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/30 rounded-lg transition-all" data-id="{{ $book->id }}" data-title="{{ e($book->title) }}" data-author="{{ e($book->author) }}" data-isbn="{{ e($book->isbn) }}" data-stock="{{ $book->stock }}" data-category="{{ e($book->category) }}" data-cover_url="{{ e($book->cover_url) }}" onclick="openEditModal(this)">
 <span class="material-symbols-outlined" data-icon="edit">edit</span>
 </button>
-<button class="p-xs text-on-surface-variant hover:text-error hover:bg-error-container/30 rounded-lg transition-all">
-<span class="material-symbols-outlined" data-icon="delete">delete</span>
-</button>
+<form method="POST" action="{{ route('books.destroy', $book) }}" onsubmit="return confirm('Delete this book?')">
+    @csrf
+    @method('DELETE')
+    <button class="p-xs text-on-surface-variant hover:text-error hover:bg-error-container/30 rounded-lg transition-all" type="submit">
+        <span class="material-symbols-outlined" data-icon="delete">delete</span>
+    </button>
+</form>
 </div>
 </td>
 </tr>
-<tr class="hover:bg-surface-container-lowest/50 transition-colors">
-<td class="px-md py-md">
-<div class="flex items-center gap-sm">
-<div class="w-10 h-14 bg-surface-container rounded-sm flex-shrink-0 overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="An elegant historical book cover with gold-embossed lettering on a dark forest green background. The style is classic and authoritative, conveying a sense of institutional gravity and scholarly importance. The visual composition is clean and centered, adhering to a systematic corporate design philosophy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBfzFfeD1qVWglj5Es7PLT7O_P9SYlATvk70EOfnxpzqWCLNiHwYyQ5p4KAn1V26mM4qq3tzYDW2C7HF--lrSka6JAvIJtfxD-nXBhZj_ELyYZRzud8hZr8pKD3kOZvaUXHktb80OuXmlf43PMbWPdTIgpybyMs1lbzwTFh96OnvDU0F1qnM_Wik5CXrh1J38TUsw5szCkRLEqDjuuKsnIxxjeMtr3JMqePOFiXC0MKE3rojiMteEeOqUcPGd2wzhck4TLRxddr2l7"/>
-</div>
-<div>
-<p class="font-label-lg text-label-lg text-primary">Foundations of Logic</p>
-<p class="text-label-md text-on-surface-variant">A. Turing</p>
-</div>
-</div>
-</td>
-<td class="px-md py-md font-body-md text-on-surface-variant">978-0-13-110362-7</td>
-<td class="px-md py-md">
-<span class="px-sm py-[2px] bg-primary-fixed text-on-primary-fixed-variant rounded-full text-[11px] font-bold uppercase tracking-wider">Theory</span>
-</td>
-<td class="px-md py-md text-center">
-<div class="inline-flex items-center gap-xs px-sm py-[2px] bg-emerald-100 text-emerald-800 rounded-full text-[11px] font-bold">
-<span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
-                                        45 In Stock
-                                    </div>
-</td>
-<td class="px-md py-md text-right">
-<div class="flex justify-end gap-xs">
-<button class="p-xs text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/30 rounded-lg transition-all">
-<span class="material-symbols-outlined" data-icon="edit">edit</span>
-</button>
-<button class="p-xs text-on-surface-variant hover:text-error hover:bg-error-container/30 rounded-lg transition-all">
-<span class="material-symbols-outlined" data-icon="delete">delete</span>
-</button>
-</div>
-</td>
-</tr>
-<tr class="hover:bg-surface-container-lowest/50 transition-colors">
-<td class="px-md py-md">
-<div class="flex items-center gap-sm">
-<div class="w-10 h-14 bg-surface-container rounded-sm flex-shrink-0 overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A vibrant science fiction book cover featuring a high-tech spaceship against a backdrop of deep space nebulas in blues and purples. The design is modern and clean, fitting into a professional digital dashboard environment. High contrast lighting and sharp focus emphasize the futuristic and technological theme of the library's catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACHpHMujEpzQ8dGs5L4g9Rm2tskkQiu55GW4j1k_jqucjgEwiA5yD8GC9aVcg92jB30t82TbtFfS2rw4dx8TiyT_pq9LLe3JGR7K827FY1ev9ztTSq8xWawQ0iFC3ROYFiyuwVL8fPrb07v0MH7hOsYcUoMkYBszSb4GxOCj4ejz0xRT_7ZxlOdyBh_MotDjVBTEdtqbJ1OHlRhBaUOhUDtWKsIvrgHDgjzHcbSw1lbdoQTqhjlWrbOYdO0_yVmQ8ZbGW1S0Kp15hQ"/>
-</div>
-<div>
-<p class="font-label-lg text-label-lg text-primary">Interstellar Design</p>
-<p class="text-label-md text-on-surface-variant">S. Miller</p>
-</div>
-</div>
-</td>
-<td class="px-md py-md font-body-md text-on-surface-variant">978-1-59327-584-6</td>
-<td class="px-md py-md">
-<span class="px-sm py-[2px] bg-tertiary-fixed text-on-tertiary-fixed-variant rounded-full text-[11px] font-bold uppercase tracking-wider">Fiction</span>
-</td>
-<td class="px-md py-md text-center">
-<div class="inline-flex items-center gap-xs px-sm py-[2px] bg-red-100 text-red-800 rounded-full text-[11px] font-bold">
-<span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-                                        Out of Stock
-                                    </div>
-</td>
-<td class="px-md py-md text-right">
-<div class="flex justify-end gap-xs">
-<button class="p-xs text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/30 rounded-lg transition-all">
-<span class="material-symbols-outlined" data-icon="edit">edit</span>
-</button>
-<button class="p-xs text-on-surface-variant hover:text-error hover:bg-error-container/30 rounded-lg transition-all">
-<span class="material-symbols-outlined" data-icon="delete">delete</span>
-</button>
-</div>
-</td>
-</tr>
+@endforeach
 </tbody>
 </table>
 </div>
@@ -381,24 +321,26 @@
 <span class="material-symbols-outlined" data-icon="close">close</span>
 </button>
 </div>
-<form class="p-lg space-y-md" id="bookForm">
+<form class="p-lg space-y-md" id="bookForm" method="POST" action="{{ route('books.store') }}">
+    @csrf
+    <input type="hidden" name="_method" id="_method_input" value="POST" />
 <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
 <div class="md:col-span-2 space-y-xs">
 <label class="font-label-lg text-label-lg text-on-surface">Book Title</label>
-<input class="w-full px-sm py-xs border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all" name="title" placeholder="e.g. The Pragmatic Programmer" required="" type="text"/>
+<input id="book_title" class="w-full px-sm py-xs border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all" name="title" placeholder="e.g. The Pragmatic Programmer" required="" type="text"/>
 <p class="text-[11px] text-error hidden" id="titleError">Title is required.</p>
 </div>
 <div class="space-y-xs">
 <label class="font-label-lg text-label-lg text-on-surface">ISBN Number</label>
-<input class="w-full px-sm py-xs border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all" name="isbn" placeholder="978-X-XXXX-XXXX-X" required="" type="text"/>
+<input id="book_isbn" class="w-full px-sm py-xs border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all" name="isbn" placeholder="978-X-XXXX-XXXX-X" type="text"/>
 </div>
 <div class="space-y-xs">
 <label class="font-label-lg text-label-lg text-on-surface">Initial Stock</label>
-<input class="w-full px-sm py-xs border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all" min="0" name="stock" placeholder="0" required="" type="number"/>
+<input id="book_stock" class="w-full px-sm py-xs border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all" min="0" name="stock" placeholder="0" type="number"/>
 </div>
 <div class="space-y-xs">
 <label class="font-label-lg text-label-lg text-on-surface">Category</label>
-<select class="w-full px-sm py-xs border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all bg-surface-container-lowest">
+<select id="book_category" name="category" class="w-full px-sm py-xs border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all bg-surface-container-lowest">
 <option>Technical</option>
 <option>Fiction</option>
 <option>History</option>
@@ -408,7 +350,7 @@
 </div>
 <div class="space-y-xs">
 <label class="font-label-lg text-label-lg text-on-surface">Author</label>
-<input class="w-full px-sm py-xs border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all" name="author" placeholder="Full name" type="text"/>
+<input id="book_author" class="w-full px-sm py-xs border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all" name="author" placeholder="Full name" type="text"/>
 </div>
 </div>
 <div class="pt-md border-t border-outline-variant flex justify-end gap-sm">
@@ -426,8 +368,30 @@
 <script>
         const modal = document.getElementById('bookModal');
         const form = document.getElementById('bookForm');
+        const modalTitle = document.querySelector('#bookModal .font-headline-sm');
+        const baseBooksUrl = "{{ url('books') }}";
 
         function openModal() {
+            // prepare for creating new book
+            form.reset();
+            form.action = "{{ route('books.store') }}";
+            document.getElementById('_method_input').value = 'POST';
+            modalTitle.textContent = 'Add New Book';
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openEditModal(btn) {
+            const id = btn.getAttribute('data-id');
+            document.getElementById('book_title').value = btn.getAttribute('data-title');
+            document.getElementById('book_author').value = btn.getAttribute('data-author');
+            document.getElementById('book_isbn').value = btn.getAttribute('data-isbn');
+            document.getElementById('book_stock').value = btn.getAttribute('data-stock');
+            document.getElementById('book_category').value = btn.getAttribute('data-category');
+            // set form to update
+            form.action = baseBooksUrl + '/' + id;
+            document.getElementById('_method_input').value = 'PATCH';
+            modalTitle.textContent = 'Edit Book';
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -436,24 +400,6 @@
             modal.classList.add('hidden');
             document.body.style.overflow = '';
         }
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Simple Animation Effect on submit
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerText;
-            submitBtn.innerText = 'Processing...';
-            submitBtn.disabled = true;
-
-            setTimeout(() => {
-                alert('Success: Book successfully added to the catalog.');
-                submitBtn.innerText = originalText;
-                submitBtn.disabled = false;
-                form.reset();
-                closeModal();
-            }, 800);
-        });
 
         // Close modal on backdrop click
         modal.addEventListener('click', (e) => {
@@ -464,11 +410,13 @@
 
         // Search highlight interaction
         const searchInput = document.querySelector('input[placeholder*="Search"]');
-        searchInput.addEventListener('focus', () => {
-            searchInput.parentElement.classList.add('ring-2', 'ring-secondary/20');
-        });
-        searchInput.addEventListener('blur', () => {
-            searchInput.parentElement.classList.remove('ring-2', 'ring-secondary/20');
-        });
+        if (searchInput) {
+            searchInput.addEventListener('focus', () => {
+                searchInput.parentElement.classList.add('ring-2', 'ring-secondary/20');
+            });
+            searchInput.addEventListener('blur', () => {
+                searchInput.parentElement.classList.remove('ring-2', 'ring-secondary/20');
+            });
+        }
     </script>
 </body></html>

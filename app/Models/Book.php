@@ -13,6 +13,9 @@ class Book extends Model
         'title',
         'author',
         'cover_url',
-        'published_at'
+        'published_at',
+        'isbn',
+        'stock',
+        'category'
     ];
 }

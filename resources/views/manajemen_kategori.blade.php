@@ -154,7 +154,7 @@
 <div class="mt-auto space-y-xs pt-md border-t border-outline-variant">
 <button class="w-full flex items-center justify-center gap-xs bg-secondary text-on-secondary px-md py-sm rounded-lg font-label-lg active:scale-95 transition-transform" onclick="openModal()">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
-            Add New Entry
+            Add New Category
         </button>
 <a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="{{ route('profile.edit') }}">
     <span class="material-symbols-outlined" data-icon="settings">settings</span>
@@ -203,7 +203,7 @@
 </div>
 <button class="bg-secondary text-on-secondary px-lg py-sm rounded-xl font-label-lg text-label-lg flex items-center gap-xs shadow-md hover:shadow-lg transition-all active:scale-[0.98]" onclick="openModal()">
 <span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
-                    Tambah Kategori Baru
+                    Add New Category
                 </button>
 </div>
 <!-- Dashboard Stats Row (Light Bento) -->
