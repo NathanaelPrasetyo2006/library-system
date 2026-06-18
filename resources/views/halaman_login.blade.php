@@ -214,6 +214,13 @@
 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
 </button>
 </form>
+<form class="mt-sm" method="POST" action="{{ route('login.guest') }}">
+@csrf
+<button class="w-full py-sm bg-surface-container text-on-surface-variant font-label-lg text-label-lg rounded-lg border border-outline-variant hover:bg-surface-container-high active:scale-[0.98] transition-all flex items-center justify-center gap-xs" type="submit">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span>Login as Guest</span>
+</button>
+</form>
 <div class="mt-xl pt-lg border-t border-outline-variant">
 <p class="text-center font-label-md text-label-md text-on-surface-variant">
                         By logging in, you agree to our <a class="text-on-surface font-semibold hover:underline" href="#">Terms of Service</a> and <a class="text-on-surface font-semibold hover:underline" href="#">Privacy Policy</a>.
